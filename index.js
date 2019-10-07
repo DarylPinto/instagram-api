@@ -1,6 +1,9 @@
 const express = require("express");
 const parse = require("./utilities/scrape.js");
+const cache = require("./utilities/cache.js");
 const logError = require("./utilities/log-error.js");
+
+const sample = require("./sample.json");
 
 const app = express();
 const port = 3000;
@@ -11,6 +14,7 @@ app.get("/api/:username", async (req, res) => {
 	try {
 		username = req.params.username;
 		const data = await parse(username);
+		// await cache(username, data);
 
 		if (data.status) {
 			return res.status(data.status).json(data);
@@ -34,7 +38,7 @@ app.get("/api/:username", async (req, res) => {
 });
 
 app.get("/sample", (req, res) => {
-	res.json(sample);
+	return res.json(sample);
 });
 
 app.listen(port, () => {

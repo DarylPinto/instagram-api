@@ -33,13 +33,15 @@ module.exports = username => {
 			.map(edge => edge.node)
 			.map(post => ({
 				id: post.shortcode,
-				likes: post.edge_liked_by.count,
-				comments: post.edge_media_to_comment.count,
+				caption: post.edge_media_to_caption.edges[0].node.text,
 				thumbnails: {
 					small: post.thumbnail_resources[1].src,
 					large: post.thumbnail_src
 				},
-				image: post.display_url
+				image: post.display_url,
+				likes: post.edge_liked_by.count,
+				comments: post.edge_media_to_comment.count,
+				is_video: post.is_video
 			}));
 		
 		// Format response object to send out
