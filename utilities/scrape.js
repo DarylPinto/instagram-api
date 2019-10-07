@@ -1,30 +1,26 @@
 const fetch = require("node-fetch");
-
-const start = "window._sharedData =";
-const end = ";</script>";
+const { JSDOM } = require("jsdom");
+const logError = require("../utilities/log-error.js");
 
 module.exports = username => {
 	return new Promise(async (resolve, reject) => {
-		let res, body, json, user;
+		let res, body, jsdom, user;
 
 		try {
 			// Fetch page
-			res = await fetch(`http://www.instagram.com/${username}`);
+			res = await fetch(`http://wwwinstagram.com/${username}`);
 			body = await res.text();
 
 			// Ensure it's actually a user's profile page
-			if (
-				(!body.includes(start) && !body.includes("ProfilePage")) ||
-				body.includes("Page Not Found")
-			) {
+			if (!body.includes("ProfilePage") || body.includes("Page Not Found")) {
 				return reject({ status: 404 });
 			}
 
 			// Parse javascript from  bottom of page response
-			json = body.substr(body.indexOf(start) + start.length);
-			json = JSON.parse(json.substr(0, json.indexOf(end)));
-			user = json.entry_data.ProfilePage[0].graphql.user;
+			jsdom = new JSDOM(body, { runScripts: "dangerously" });
+			user = jsdom.window._sharedData.entry_data.ProfilePage[0].graphql.user;
 		} catch (err) {
+			logError(err, `Attempted to scrape data for profile "${username}"`);
 			return reject(err);
 		}
 
@@ -43,7 +39,7 @@ module.exports = username => {
 				comments: post.edge_media_to_comment.count,
 				is_video: post.is_video
 			}));
-		
+
 		// Format response object to send out
 		return resolve({
 			username: user.username,
@@ -59,7 +55,7 @@ module.exports = username => {
 			postCount: user.edge_owner_to_timeline_media.count,
 			followers: user.edge_followed_by.count,
 			following: user.edge_follow.count,
-			posts: posts
+			recentPosts: posts
 		});
 	});
 };
