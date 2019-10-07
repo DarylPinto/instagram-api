@@ -5,28 +5,30 @@ const end = ";</script>";
 
 module.exports = username => {
 	return new Promise(async (resolve, reject) => {
-
-		let res;
-		let body;
+		let res, body, json, user;
 
 		try {
+			// Fetch page
 			res = await fetch(`http://www.instagram.com/${username}`);
 			body = await res.text();
-		} catch(err) {
+
+			// Ensure it's actually a user's profile page
+			if (
+				(!body.includes(start) && !body.includes("ProfilePage")) ||
+				body.includes("Page Not Found")
+			) {
+				return reject({ status: 404 });
+			}
+
+			// Parse javascript from  bottom of page response
+			json = body.substr(body.indexOf(start) + start.length);
+			json = JSON.parse(json.substr(0, json.indexOf(end)));
+			user = json.entry_data.ProfilePage[0].graphql.user;
+		} catch (err) {
 			return reject(err);
 		}
 
-		if(body.includes("Page Not Found")) {
-			return reject({
-				status: 404,
-				message: "User Not Found"
-			});
-		}
-
-		let json = body.substr(body.indexOf(start) + start.length);
-		json = JSON.parse(json.substr(0, json.indexOf(end)));
-		user = json.entry_data.ProfilePage[0].graphql.user;
-
+		// Format posts array
 		let posts = user.edge_owner_to_timeline_media.edges
 			.map(edge => edge.node)
 			.map(post => ({
@@ -39,7 +41,8 @@ module.exports = username => {
 				},
 				image: post.display_url
 			}));
-
+		
+		// Format response object to send out
 		return resolve({
 			username: user.username,
 			profile_pic: {
@@ -57,4 +60,4 @@ module.exports = username => {
 			posts: posts
 		});
 	});
-}
+};
