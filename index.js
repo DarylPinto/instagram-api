@@ -57,6 +57,10 @@ app.get("/:username", async (req, res) => {
 	}
 });
 
+app.get("/", (req, res) => {
+	res.sendFile(`${__dirname}/public/index.html`);
+});
+
 app.listen(port, () => {
 	console.log(`Instagram API running on http://localhost:${port}!`);
 });

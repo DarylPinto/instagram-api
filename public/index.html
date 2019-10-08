@@ -1,0 +1,57 @@
+<html>
+	<head>
+		<title>Instagram API</title>
+		<style>
+			body {
+				font-family: sans-serif;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				background: linear-gradient(.65turn, #405DE6, #5851DB, #833AB4, #C13584, #E1306C, #F77737, #FFDC80);
+			}
+			main {
+				background-color: white;
+				box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+				padding: 40px;
+				border-radius: 5px;
+				width: 90vw;
+				max-width: 500px;
+				text-align: center;
+			}
+			h1 {
+				margin-top: 0;
+				margin-bottom: 40px;
+			}
+			pre {
+				font-size: 18px;
+				color: gray;
+			}
+			a {
+				color: black;
+				text-decoration: none;
+			}
+			a:hover {
+				text-decoration: underline;
+			}
+		</style>
+	</head>
+	<body>
+		<main>
+			<h1>Instagram API</h1>
+			<p>
+				<pre>GET <a href="#">https://localhost:3000/willsmith</a></pre>
+			</p>
+		</main>
+		<script>
+			const link = document.querySelector("a");
+			const examples = [
+				"cristiano", "arianagrande", "therock", "beyonce",
+				"leomessi", "taylorswift", "natgeo", "nike", "katyperry"
+			];	
+			const example = examples[Math.floor(Math.random() * examples.length)];
+			const url = `${window.location.origin}/${example}`;
+			link.innerText = url;
+			link.setAttribute("href", url);
+		</script>
+	</body>
+</html>
