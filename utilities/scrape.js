@@ -29,7 +29,10 @@ module.exports = username => {
 			.map(edge => edge.node)
 			.map(post => ({
 				id: post.shortcode,
-				caption: post.edge_media_to_caption.edges[0].node.text,
+				caption:
+					post.edge_media_to_caption.edges.length > 0
+						? post.edge_media_to_caption.edges[0].node.text
+						: null,
 				thumbnails: {
 					small: post.thumbnail_resources[1].src,
 					large: post.thumbnail_src
