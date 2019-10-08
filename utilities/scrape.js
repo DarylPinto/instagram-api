@@ -8,7 +8,7 @@ module.exports = username => {
 
 		try {
 			// Fetch page
-			res = await fetch(`http://wwwinstagram.com/${username}`);
+			res = await fetch(`http://www.instagram.com/${username}`);
 			body = await res.text();
 
 			// Ensure it's actually a user's profile page
