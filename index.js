@@ -14,7 +14,7 @@ app.get("/:username", async (req, res) => {
 		// Get username from request
 		username = req.params.username;
 		// Check if data is already cached
-		cached = await cache.load(username);
+		cached = cache.load(username);
 
 		// If it's already cached
 		// check if cache is fresh enough (according to config.json)
