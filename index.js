@@ -1,20 +1,23 @@
 const express = require("express");
 const scrape = require("./utilities/scrape.js");
 const cache = require("./utilities/cache.js");
+const logError = require("./utilities/log-error.js");
 const config = require("./config.json");
 
 const app = express();
 const port = 3000;
 
+process.on("unhandledRejection", err => logError(err, "Unhandled Rejection"));
+
 app.get("/:username", async (req, res) => {
 	res.header("Access-Control-Allow-Origin", "*");
-	let username, cached;
+	let username;
 
 	try {
 		// Get username from request
 		username = req.params.username;
 		// Check if data is already cached
-		cached = cache.load(username);
+		let cached = cache.load(username);
 
 		// If it's already cached
 		// check if cache is fresh enough (according to config.json)
@@ -31,32 +34,26 @@ app.get("/:username", async (req, res) => {
 		// scrape instagram's live URL
 		const data = await scrape(username);
 
-		// If there's a status other than 200, data.status will exist.
-		// Send the response with this correct status
-		if (data.status) {
-			cache.save(username, data.status, data);
-			return res.status(data.status).json(data);
-		}
-
-		// Respond with scraped data
-		cache.save(username, 200, data);
-		return res.send(data);
-	} catch (err) {	
-		// Show 404 if user not found
-		if (err.status === 404) {
+		// If there's no data returned from the scraper
+		// respond with 404
+		if (data === null) {
 			let data = { status: 404, message: "User Not Found" };
 			cache.save(username, 404, data);
 			return res.status(404).json(data);
 		}
 
-		// If there's a server-side exception
-		// respond with a 500 error
+		// Respond with scraped data
+		cache.save(username, 200, data);
+		return res.send(data);
+	} catch (err) {
+		// Respond with a 500 error if there's a server side exception
 		let data = { status: 500, message: err.message };
 		cache.save(username, 500, data);
 		return res.status(500).json(data);
 	}
 });
 
+// Landing page/tutorial
 app.get("/", (req, res) => {
 	res.sendFile(`${__dirname}/public/index.html`);
 });

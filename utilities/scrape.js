@@ -13,7 +13,7 @@ module.exports = username => {
 
 			// Ensure it's actually a user's profile page
 			if (!body.includes("ProfilePage") || body.includes("Page Not Found")) {
-				return reject({ status: 404 });
+				return resolve(null);
 			}
 
 			// Parse javascript from  bottom of page response
