@@ -1,12 +1,23 @@
 # Instagram API
+> "Because getting content from Instagram shouldn't be that frustrating"
+
+![Preview](https://i.imgur.com/IZYwWyW.png)
 
 ## How to use
 
-Clone this repo
+1. Clone this repo
+2. `cd` into the repo
+3. `yarn install`
+4. `yarn start`
+4. Visit http://localhost:3000 in your browser
 
-```
-yarn install
-yarn start
-```
+Optionally, settings can be tweaked in `config.json`
 
-Navigate to http://localhost:3000 in your browser
+## Features
+* Rate limiting
+* Response caching
+
+## Limitations
+
+* Only supports `GET` requests on user pages (by design)
+* Only includes 12 most recent posts
