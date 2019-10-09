@@ -10,9 +10,9 @@ process.on("unhandledRejection", err => logError(err, "Unhandled Rejection"));
 const app = express();
 const port = 3000;
 const limit = rateLimit({
-	windowMs: 1000,
-	max: 2,
-	message: {status: 429, message: "You are being rate limited"}
+	windowMs: config["rate_limit_window"],
+	max: config["max_requests_per_rate_limit_window"],
+	message: {status: 429, message: "You are sending too many requests"}
 });
 
 app.get("/:username", limit, async (req, res) => {
