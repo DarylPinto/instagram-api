@@ -29,23 +29,27 @@ module.exports = username => {
 			.map(edge => edge.node)
 			.map(post => ({
 				id: post.shortcode,
-				caption:
-					post.edge_media_to_caption.edges.length > 0
-						? post.edge_media_to_caption.edges[0].node.text
-						: null,
+				link: `https://www.instagram.com/p/${post.shortcode}/`,
+				image: post.display_url,
 				thumbnails: {
 					small: post.thumbnail_resources[1].src,
 					large: post.thumbnail_src
 				},
-				image: post.display_url,
+				caption:
+					post.edge_media_to_caption.edges.length > 0
+						? post.edge_media_to_caption.edges[0].node.text
+						: null,
 				likes: post.edge_liked_by.count,
 				comments: post.edge_media_to_comment.count,
-				is_video: post.is_video
+				is_video: post.is_video,
+				location: post.location ? post.location.name : null,
+				date: new Date(post.taken_at_timestamp * 1000).toISOString()
 			}));
 
 		// Format response object to send out
 		return resolve({
 			username: user.username,
+			link: `https://www.instagram.com/${username}/`,
 			profile_pic: {
 				small: user.profile_pic_url,
 				large: user.profile_pic_url_hd
