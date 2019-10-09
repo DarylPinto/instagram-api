@@ -5,6 +5,7 @@ module.exports = (err, info = "No additional info") => {
 		===============================
 		Time: ${new Date().toLocaleString("en-CA", tz)}
 		Info: ${info}
-		-- Stack Trace Below --\n${err.stack}
+		-- Stack Trace Below --
+		${err.stack}
 	`.trim().replace(/\t/g, ""));
 };
