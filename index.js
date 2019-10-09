@@ -10,8 +10,8 @@ process.on("unhandledRejection", err => logError(err, "Unhandled Rejection"));
 const app = express();
 const port = 3000;
 const limit = rateLimit({
-	windowMs: config["rate_limit_window"],
-	max: config["max_requests_per_rate_limit_window"],
+	windowMs: config["rate_limit"]["window_ms"],
+	max: config["rate_limit"]["max_requests"],
 	message: {status: 429, message: "You are sending too many requests"}
 });
 
@@ -31,7 +31,7 @@ app.get("/:username", limit, async (req, res) => {
 		if (cached) {
 			const { status, response, time } = cached;
 			const cacheAge = Math.floor((new Date() - new Date(time)) / 1000 / 60);
-			if (cacheAge < config["max_cache_time"]) {
+			if (cacheAge < config["cache_duration_minutes"]) {
 				return res.status(status).json(JSON.parse(response));
 			}
 		}

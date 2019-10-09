@@ -1,5 +1,7 @@
 {
-	"max_cache_time": 5,
-	"rate_limit_window": 1000,
-	"max_requests_per_rate_limit_window": 2
+	"cache_duration_minutes": 5,
+	"rate_limit": {
+		"window_ms": 1000,
+		"max_requests": 2
+	}	
 }
