@@ -1,7 +1,5 @@
-# Instagram API
-> "Because getting content from Instagram shouldn't be that frustrating"
-
 ![Preview](https://i.imgur.com/IZYwWyW.png)
+> "Because getting content from Instagram shouldn't be that frustrating"
 
 ## How to use
 
