@@ -12,7 +12,7 @@ const port = 3000;
 const limit = rateLimit({
 	windowMs: config["rate_limit"]["window_ms"],
 	max: config["rate_limit"]["max_requests"],
-	message: {status: 429, message: "You are sending too many requests"}
+	message: { status: 429, message: "You are sending requests too quickly" }
 });
 
 app.get("/:username", limit, async (req, res) => {
@@ -43,7 +43,7 @@ app.get("/:username", limit, async (req, res) => {
 		// If there's no data returned from the scraper
 		// respond with 404
 		if (data === null) {
-			let data = { status: 404, message: "User Not Found" };
+			let data = { status: 404, message: "Instagram User Not Found" };
 			cache.save(username, 404, data);
 			return res.status(404).json(data);
 		}
@@ -53,8 +53,7 @@ app.get("/:username", limit, async (req, res) => {
 		return res.send(data);
 	} catch (err) {
 		// Respond with a 500 error if there's a server side exception
-		let data = { status: 500, message: err.message };
-		cache.save(username, 500, data);
+		let data = { status: 500, message: "Internal Server Error" };
 		return res.status(500).json(data);
 	}
 });
