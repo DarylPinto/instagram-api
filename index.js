@@ -54,6 +54,7 @@ app.get("/:username", limit, async (req, res) => {
 	} catch (err) {
 		// Respond with a 500 error if there's a server side exception
 		let data = { status: 500, message: "Internal Server Error" };
+		logError(err, err.message);
 		return res.status(500).json(data);
 	}
 });
