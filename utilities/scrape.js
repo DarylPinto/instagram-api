@@ -4,12 +4,11 @@ const logError = require("../utilities/log-error.js");
 
 module.exports = username => {
 	return new Promise(async (resolve, reject) => {
-		let res, body, jsdom, user;
-
+		
 		try {
 			// Fetch page
-			res = await fetch(`http://www.instagram.com/${username}`);
-			body = await res.text();
+			let res = await fetch(`http://www.instagram.com/${username}`);
+			let body = await res.text();
 
 			// Ensure it's actually a user's profile page
 			if (!body.includes("ProfilePage") || body.includes("Page Not Found")) {
@@ -17,8 +16,14 @@ module.exports = username => {
 			}
 
 			// Parse javascript from  bottom of page response
-			jsdom = new JSDOM(body, { runScripts: "dangerously" });
-			user = jsdom.window._sharedData.entry_data.ProfilePage[0].graphql.user;
+			let jsdom = new JSDOM(body, { runScripts: "dangerously" });
+			let entryData = jsdom.window._sharedData.entry_data;
+
+			// Ensure Instagram's `_sharedData.entry_data` object actually
+			// has a `ProfilePage` property to prevent false positives
+			if (!entryData.ProfilePage) return resolve(null);
+
+			let user = entryData.ProfilePage[0].graphql.user;			
 
 			// Format posts array
 			let posts = user.edge_owner_to_timeline_media.edges
