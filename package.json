@@ -5,7 +5,8 @@
   "license": "MIT",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "test": "jest"
   },
   "dependencies": {
     "better-sqlite3": "^5.4.3",
@@ -15,6 +16,7 @@
     "node-fetch": "^2.6.0"
   },
   "devDependencies": {
+    "jest": "^24.9.0",
     "nodemon": "^1.19.3"
   }
 }
