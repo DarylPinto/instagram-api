@@ -5,7 +5,7 @@
 
 1. Clone this repo
 2. `cd` into the repo
-3. `yarn install`
+3. `yarn install` (This may take a few minutes - be patient)
 4. `yarn start`
 4. Visit http://localhost:3000 in your browser
 
