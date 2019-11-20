@@ -8,7 +8,6 @@ const config = require("./config.json");
 process.on("unhandledRejection", err => logError(err, "Unhandled Rejection"));
 
 const app = express();
-const port = 3000;
 const limit = rateLimit({
 	windowMs: config["rate_limit"]["window_ms"],
 	max: config["rate_limit"]["max_requests"],
@@ -64,6 +63,7 @@ app.get("/", (req, res) => {
 	res.sendFile(`${__dirname}/public/index.html`);
 });
 
-app.listen(port, () => {
-	console.log(`Instagram API running on http://localhost:${port}!`);
+app.listen(config["port"], () => {
+	// eslint-disable-next-line no-console
+	console.log(`Instagram API running on http://localhost:${config["port"]}!`);
 });
