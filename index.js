@@ -62,7 +62,9 @@ app.get("/", (req, res) => {
 	res.sendFile(`${__dirname}/public/index.html`);
 });
 
-app.listen(config["port"], () => {
+const server = app.listen(config["port"], () => {
 	// eslint-disable-next-line no-console
 	console.log(`Instagram API running on http://localhost:${config["port"]}!`);
 });
+
+module.exports = server;

@@ -4,6 +4,11 @@ const appUrl = `http://localhost:${config.port}`;
 
 jest.setTimeout(30000);
 
+// Start api server before running any tests
+let server;
+beforeAll(() => (server = require("../index.js")));
+afterAll(() => server.close());
+
 // Sleep command necessary to prevent http 429 response
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -31,7 +36,7 @@ test("Fetches Instagram users", async () => {
 		expect(data.username).toBe(username);
 	};
 
-	// Check if it fetches a handful of users	
+	// Check if it fetches a handful of users
 	await checkUser("cristiano");
 	await sleep(sleepDuration);
 	await checkUser("arianagrande");
@@ -76,7 +81,7 @@ test("Rate limits requests", async () => {
 		statusCode = data.status;
 
 		i++;
-		if(i <= max_requests) await checkUser();
+		if (i <= max_requests) await checkUser();
 	};
 
 	await checkUser();
