@@ -1,12 +1,12 @@
 const fetch = require("node-fetch");
-const config = require("../config.json");
+const config = require("../api/config.json");
 const appUrl = `http://localhost:${config.port}`;
 
 jest.setTimeout(30000);
 
 // Start api server before running any tests
 let server;
-beforeAll(() => (server = require("../index.js")));
+beforeAll(() => (server = require("../api/index.js")));
 afterAll(() => server.close());
 
 // Sleep command necessary to prevent http 429 response

@@ -9,7 +9,7 @@
 4. `yarn start`
 4. Visit http://localhost:3000 in your browser
 
-Optionally, settings can be tweaked in `config.json`
+Optionally, settings can be tweaked in `api/config.json`
 
 ## Features
 * Rate limiting
