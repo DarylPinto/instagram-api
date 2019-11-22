@@ -32,7 +32,7 @@ module.exports = username => {
 					id: post.shortcode,
 					link: `https://www.instagram.com/p/${post.shortcode}/`,
 					image: post.display_url,
-					thumbnails: {
+					thumbnail: {
 						small: post.thumbnail_resources[1].src,
 						large: post.thumbnail_src
 					},
