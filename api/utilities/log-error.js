@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const tz = { timeZone: "America/New_York" };
 
 module.exports = (err, info = "No additional info") => {

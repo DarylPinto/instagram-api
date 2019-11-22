@@ -3,11 +3,12 @@
 
 ## How to use
 
-1. Clone this repo
-2. `cd` into the repo
-3. `yarn install` (This may take a few minutes - be patient)
-4. `yarn start`
-4. Visit http://localhost:3000 in your browser
+1. Install [NodeJS](https://nodejs.org/) (12.12.0 or higher)
+2. `git clone` this repo
+3. `cd` into the repo directory
+4. `npm install` (This may take a few minutes - be patient)
+5. `npm start`
+6. Visit http://localhost:3000 in your browser
 
 Optionally, settings can be tweaked in `api/config.json`
 
