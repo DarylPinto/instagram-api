@@ -1,90 +1,48 @@
-const fetch = require("node-fetch");
-const config = require("../api/config.json");
-const appUrl = `http://localhost:${config.port}`;
+// Explicitly disable rate limiting for the following tests
+// Env variables must be strings
+process.env.DISABLE_RATE_LIMIT = "1";
 
-jest.setTimeout(30000);
-
-// Start api server before running any tests
-let server;
-beforeAll(() => (server = require("../api/index.js")));
-afterAll(() => server.close());
-
-// Sleep command necessary to prevent http 429 response
-const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
-
-/**
- * TESTS
- */
+const app = require("../api/app.js");
+const supertest = require("supertest");
+const request = supertest(app);
 
 // Ensures API is running on localhost
-test("API is running", async () => {
-	const res = await fetch(appUrl);
-	const data = await res.text();
-	expect(data).toBeDefined();
+test("Starts up", async done => {
+	const res = await request.get("/");
+	expect(res.text).toBeDefined();
+	done();
 });
 
 // Ensures API properly responds to user requests
 // TODO: Check each individual response field
-test("Fetches Instagram users", async () => {
-	const sleepDuration = config.rate_limit.window_ms;
+test("Fetches Instagram users", async done => {
+	const usernames = ["cristiano", "arianagrande", "therock", "leomessi"];
+	const responses = await Promise.all(
+		usernames.map(username => request.get(`/${username}`))
+	);
 
-	// Fetch data for `username`
-	// and expect valid response
-	const checkUser = async username => {
-		let res = await fetch(`${appUrl}/${username}`);
-		let data = await res.json();
-		expect(data.username).toBe(username);
-	};
+	responses.forEach((res, i) => {
+		expect(res.body.username).toBe(usernames[i]);
+	});
 
-	// Check if it fetches a handful of users
-	await checkUser("cristiano");
-	await sleep(sleepDuration);
-	await checkUser("arianagrande");
-	await sleep(sleepDuration);
-	await checkUser("therock");
+	done();
 });
 
 // Ensures API responds with 'Not Found error' for
 // invalid usernames/non-existent users
-test("404s invalid usernames", async () => {
-	const sleepDuration = config.rate_limit.window_ms;
+test("404s invalid usernames", async done => {
+	const usernames = [
+		"developer",
+		"explore",
+		"about",
+		"DEMO_USERNAME_TOO_LONG_TO_BE_REAL_TESTING_TESTING_123"
+	];
 
-	// Fetch data for `username`
-	// and expect 404
-	const checkUser = async username => {
-		let res = await fetch(`${appUrl}/${username}`);
-		let data = await res.json();
-		expect(data.status).toBe(404);
-	};
+	const responses = await Promise.all(
+		usernames.map(username => request.get(`/${username}`))
+	);
 
-	await checkUser("developer");
-	await sleep(sleepDuration);
-	await checkUser("explore");
-	await sleep(sleepDuration);
-	await checkUser("about");
-	await sleep(sleepDuration);
-	await checkUser("DEMO_USERNAME_TOO_LONG_TO_BE_REAL_TESTING_TESTING_123");
-});
+	responses.forEach(res => expect(res.body.status).toBe(404));
 
-// Ensures API responds with 429 error
-// when requestst are sent in too quickly
-test("Rate limits requests", async () => {
-	const { max_requests } = config.rate_limit;
-
-	let statusCode = null;
-	let i = 0;
-
-	const checkUser = async () => {
-		let res = await fetch(`${appUrl}/cristiano`);
-		let data = await res.json();
-
-		statusCode = data.status;
-
-		i++;
-		if (i <= max_requests) await checkUser();
-	};
-
-	await checkUser();
-
-	expect(statusCode).toBe(429);
+	done();
 });
