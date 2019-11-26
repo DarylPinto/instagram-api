@@ -1,27 +1,12 @@
-const express = require("express");
-const rateLimit = require("express-rate-limit");
 const scrape = require("./utilities/scrape.js");
 const cache = require("./utilities/cache.js");
 const logError = require("./utilities/log-error.js");
 const config = require("./config.json");
 
-process.on("unhandledRejection", err => logError(err, "Unhandled Rejection"));
-
-const app = express();
-const limit = rateLimit({
-	windowMs: config["rate_limit"]["window_ms"],
-	max: config["rate_limit"]["max_requests"],
-	message: { status: 429, message: "You are sending requests too quickly" },
-	// Skip rate limiting if this env variable flag is set. (Usually for testing)
-	skip: () => process.env.DISABLE_RATE_LIMIT === "1" ? true : false
-});
-
-app.get("/:username", limit, async (req, res) => {
-	res.header("Access-Control-Allow-Origin", "*");
-
+module.exports = async (req, res) => {
 	try {
 		// Get username from request
-		const username = req.params.username;
+		const username = req.query.username;
 		// Check if data is already cached
 		const cachedData = cache.load(username);
 
@@ -57,11 +42,4 @@ app.get("/:username", limit, async (req, res) => {
 		logError(err, err.message);
 		return res.status(500).json(data);
 	}
-});
-
-// Landing page/tutorial
-app.get("/", (req, res) => {
-	res.sendFile(`${__dirname}/public/index.html`);
-});
-
-module.exports = app;
+};
