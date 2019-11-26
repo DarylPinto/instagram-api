@@ -1,6 +1,14 @@
 ![Preview](https://i.imgur.com/IZYwWyW.png)
 > "Because getting content from Instagram shouldn't be that frustrating"
 
+## Demo
+https://insta-api.now.sh/
+
+⚠️ **DO NOT USE THE DEMO LINK IN YOUR APP** ⚠️  
+*The demo link may be out of date or go offline at any time*
+
+This API is meant to be self hosted. Follow the instructions below to spin up your own instance.
+
 ## How to use
 
 1. Install [NodeJS](https://nodejs.org/) (12.12.0 or higher)
