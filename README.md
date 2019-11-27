@@ -1,5 +1,4 @@
-![Preview](https://i.imgur.com/IZYwWyW.png)
-> "Because getting content from Instagram shouldn't be that frustrating"
+# Instagram API
 
 ## Demo
 https://insta-api.now.sh/

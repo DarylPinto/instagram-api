@@ -15,7 +15,7 @@
 				padding: 40px;
 				border-radius: 5px;
 				width: 90vw;
-				max-width: 500px;
+				max-width: 520px;
 				text-align: center;
 			}
 			h1 {
@@ -23,7 +23,7 @@
 				margin-bottom: 40px;
 			}
 			pre {
-				font-size: 18px;
+				font-size: 17px;
 				color: gray;
 			}
 			a {
@@ -49,7 +49,7 @@
 				"leomessi", "taylorswift", "natgeo", "nike", "katyperry"
 			];
 			const example = examples[Math.floor(Math.random() * examples.length)];
-			const url = `${window.location.origin}/${example}`;
+			const url = `${window.location.origin}/api/${example}`;
 			link.innerText = url;
 			link.setAttribute("href", url);
 		</script>
