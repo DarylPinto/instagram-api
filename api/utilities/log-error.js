@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
-const tz = { timeZone: "America/New_York" };
+const config = require("../config.json");
+const tz = { timeZone: config["logs_timezone"] };
 
 module.exports = (err, info = "No additional info") => {
 	console.error(`

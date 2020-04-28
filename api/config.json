@@ -4,5 +4,6 @@
 	"rate_limit": {
 		"window_ms": 1000,
 		"max_requests": 2
-	}	
+	},
+	"logs_timezone": "America/New_York"
 }
