@@ -1,0 +1,11 @@
+PRAGMA foreign_keys = OFF;
+BEGIN TRANSACTION; 
+CREATE TABLE cache 
+( 
+	username TEXT UNIQUE NOT NULL PRIMARY KEY, 
+	status INTEGER NOT NULL DEFAULT (200), 
+	response TEXT NOT NULL, 
+	time TEXT NOT NULL 
+);
+COMMIT TRANSACTION;
+PRAGMA foreign_keys = ON;

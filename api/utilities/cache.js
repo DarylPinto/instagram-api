@@ -1,19 +1,13 @@
+// Create a temporary database for cache
+// (stored in memory, or a temp file if it gets too big)
+// Read more here: https://www.sqlite.org/inmemorydb.html
 const db = require("better-sqlite3")("");
+const fs = require("fs");
+const { resolve } = require("path");
 
-// Initialize temporary database for cache
-db.exec(`
-PRAGMA foreign_keys = OFF;
-BEGIN TRANSACTION; 
-CREATE TABLE cache 
-( 
-	username TEXT UNIQUE NOT NULL PRIMARY KEY, 
-	status INTEGER NOT NULL DEFAULT (200), 
-	response TEXT NOT NULL, 
-	time TEXT NOT NULL 
-);
-COMMIT TRANSACTION;
-PRAGMA foreign_keys = ON;
-`);
+// Initialize DB
+const initDB = fs.readFileSync(resolve(__dirname, "init-db.sql"), "utf8");
+db.exec(initDB);
 
 process.on("exit", () => db.close());
 
