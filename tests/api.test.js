@@ -2,6 +2,8 @@ const fetch = require("node-fetch");
 const nowUri = "https://insta-api.now.sh";
 const nowApiBaseUri = "https://insta-api.now.sh/api";
 
+jest.setTimeout(20000);
+
 // Ensures API is running on localhost
 test("Is live", async done => {
 	const res = await fetch(nowUri);
