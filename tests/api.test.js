@@ -6,43 +6,48 @@ const app = require("../api/app.js");
 const supertest = require("supertest");
 const request = supertest(app);
 
-// Ensures API is running on localhost
-test("Starts up", async (done) => {
-	const res = await request.get("/");
-	expect(res.text).toBeDefined();
-	done();
-});
-
-// Ensures API properly responds to user requests
-// TODO: Check each individual response field
-test("Fetches Instagram users", async (done) => {
-	const usernames = ["cristiano", "arianagrande", "therock", "leomessi"];
-	const responses = await Promise.all(
-		usernames.map((username) => request.get(`/${username}`))
-	);
-
-	responses.forEach((res, i) => {
-		expect(res.body.username).toBe(usernames[i]);
+describe("The API", () => {
+	it("starts up", async (done) => {
+		const res = await request.get("/");
+		expect(res.text).toBeDefined();
+		done();
 	});
 
-	done();
-});
+	it("can fetch valid Instagram users", async (done) => {
+		const usernames = ["cristiano", "arianagrande", "therock", "leomessi"];
+		const responses = await Promise.all(
+			usernames.map((username) => request.get(`/${username}`))
+		);
 
-// Ensures API responds with 'Not Found error' for
-// invalid usernames/non-existent users
-test("404s invalid usernames", async (done) => {
-	const usernames = [
-		"developer",
-		"explore",
-		"about",
-		"DEMO_USERNAME_TOO_LONG_TO_BE_REAL_TESTING_TESTING_123",
-	];
+		responses.forEach((res, i) => {
+			expect(res.body.username).toBe(usernames[i]);
+		});
 
-	const responses = await Promise.all(
-		usernames.map((username) => request.get(`/${username}`))
-	);
+		done();
+	});
 
-	responses.forEach((res) => expect(res.body.status).toBe(404));
+	it("404s invalid usernames", async (done) => {
+		const usernames = [
+			"developer",
+			"explore",
+			"about",
+			"DEMO_USERNAME_TOO_LONG_TO_BE_REAL_TESTING_TESTING_123",
+		];
 
-	done();
+		const responses = await Promise.all(
+			usernames.map((username) => request.get(`/${username}`))
+		);
+
+		responses.forEach((res) => expect(res.body.status).toBe(404));
+
+		done();
+	});
+
+	it("has CORS enabled", async (done) => {
+		const sampleUsername = "cristiano";
+		const res = await request.get(`/${sampleUsername}`);
+		const corsHeader = res.headers["access-control-allow-origin"];
+		expect(corsHeader).toBe("*");
+		done();
+	});
 });
