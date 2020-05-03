@@ -48,3 +48,10 @@ test("404s invalid usernames", async done => {
 
 	done();
 });
+
+test("Has CORS enabled", async (done) => {
+	const res = await fetch(nowUri);
+	const corsHeader = res.headers.get("access-control-allow-origin");
+	expect(corsHeader).toBe("*");
+	done();
+});
