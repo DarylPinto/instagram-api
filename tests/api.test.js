@@ -12,18 +12,17 @@ test("Is live", async done => {
 });
 
 // Ensures API properly responds to user requests
-// TODO: Check each individual response field
 test("Fetches Instagram users", async done => {
-	const usernames = ["cristiano"];//, "arianagrande", "therock", "leomessi"];
+	const usernames = ["cristiano", "arianagrande", "therock", "leomessi"];
 	let responses = await Promise.all(
 		usernames.map(username => fetch(`${nowApiBaseUri}/${username}`))
 	);
 
 	responses = await Promise.all(responses.map(res => res.json()));
 
-	responses.forEach((res, i) => {
-		expect(res.username).toBe(usernames[i]);
-	});
+	responses = responses.map(res => res.username);
+
+	expect(JSON.stringify(responses)).toBe(JSON.stringify(usernames));
 
 	done();
 });
