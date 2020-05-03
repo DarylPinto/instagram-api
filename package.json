@@ -1,27 +1,38 @@
 {
-  "name": "instagram-api",
-  "version": "1.0.0",
-  "main": "index.js",
-  "license": "MIT",
-  "scripts": {
-    "start": "node ./api/index.js",
-    "dev": "nodemon ./api/index.js",
-    "test": "jest"
-  },
-  "dependencies": {
-    "better-sqlite3": "^5.4.3",
-    "express": "^4.17.1",
-    "express-rate-limit": "^5.0.0",
-    "jsdom": "^15.1.1",
-    "node-fetch": "^2.6.0"
-  },
-  "devDependencies": {
-    "jest": "^25.4.0",
-    "nodemon": "^2.0.3",
-    "supertest": "^4.0.2"
-  },
-  "jest": {
-    "clearMocks": true,
-    "testEnvironment": "node"
-  }
+	"name": "instagram-api",
+	"version": "1.0.0",
+	"main": "index.js",
+	"license": "MIT",
+	"scripts": {
+		"start": "node ./api/index.js",
+		"dev": "nodemon ./api/index.js",
+		"test": "jest"
+	},
+	"dependencies": {
+		"better-sqlite3": "^5.4.3",
+		"express": "^4.17.1",
+		"express-rate-limit": "^5.0.0",
+		"jsdom": "^15.1.1",
+		"node-fetch": "^2.6.0"
+	},
+	"devDependencies": {
+		"husky": "^4.2.5",
+		"jest": "^25.4.0",
+		"lint-staged": "^10.2.2",
+		"nodemon": "^2.0.3",
+		"prettier": "^2.0.5",
+		"supertest": "^4.0.2"
+	},
+	"jest": {
+		"clearMocks": true,
+		"testEnvironment": "node"
+	},
+	"husky": {
+		"hooks": {
+			"pre-commit": "lint-staged"
+		}
+	},
+	"lint-staged": {
+		"*.{js,json,css,md}": "prettier --write"
+	}
 }

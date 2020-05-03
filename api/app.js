@@ -5,7 +5,7 @@ const cache = require("./utilities/cache.js");
 const logError = require("./utilities/log-error.js");
 const config = require("./config.json");
 
-process.on("unhandledRejection", err => logError(err, "Unhandled Rejection"));
+process.on("unhandledRejection", (err) => logError(err, "Unhandled Rejection"));
 
 const app = express();
 const limit = rateLimit({
@@ -13,7 +13,7 @@ const limit = rateLimit({
 	max: config["rate_limit"]["max_requests"],
 	message: { status: 429, message: "You are sending requests too quickly" },
 	// Skip rate limiting if this env variable flag is set. (Usually for testing)
-	skip: () => process.env.DISABLE_RATE_LIMIT === "1" ? true : false
+	skip: () => (process.env.DISABLE_RATE_LIMIT === "1" ? true : false),
 });
 
 app.get("/:username", limit, async (req, res) => {

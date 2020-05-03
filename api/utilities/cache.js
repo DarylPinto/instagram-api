@@ -21,7 +21,7 @@ const save = (username, status, response) => {
 };
 
 // Load response from cache
-const load = username => {
+const load = (username) => {
 	const data = db
 		.prepare("SELECT * FROM cache WHERE username = ?")
 		.get(username);

@@ -2,7 +2,7 @@ const cache = require("../api/utilities/cache.js");
 
 test("Cache saves/loads correctly", () => {
 	const testUser = "CACHE_TEST_USERNAME";
-	cache.save(testUser, 200, {sample: "data"});
+	cache.save(testUser, 200, { sample: "data" });
 
 	const data = cache.load(testUser);
 	const res = JSON.parse(data.response);

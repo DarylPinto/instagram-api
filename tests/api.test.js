@@ -7,7 +7,7 @@ const supertest = require("supertest");
 const request = supertest(app);
 
 // Ensures API is running on localhost
-test("Starts up", async done => {
+test("Starts up", async (done) => {
 	const res = await request.get("/");
 	expect(res.text).toBeDefined();
 	done();
@@ -15,10 +15,10 @@ test("Starts up", async done => {
 
 // Ensures API properly responds to user requests
 // TODO: Check each individual response field
-test("Fetches Instagram users", async done => {
+test("Fetches Instagram users", async (done) => {
 	const usernames = ["cristiano", "arianagrande", "therock", "leomessi"];
 	const responses = await Promise.all(
-		usernames.map(username => request.get(`/${username}`))
+		usernames.map((username) => request.get(`/${username}`))
 	);
 
 	responses.forEach((res, i) => {
@@ -30,19 +30,19 @@ test("Fetches Instagram users", async done => {
 
 // Ensures API responds with 'Not Found error' for
 // invalid usernames/non-existent users
-test("404s invalid usernames", async done => {
+test("404s invalid usernames", async (done) => {
 	const usernames = [
 		"developer",
 		"explore",
 		"about",
-		"DEMO_USERNAME_TOO_LONG_TO_BE_REAL_TESTING_TESTING_123"
+		"DEMO_USERNAME_TOO_LONG_TO_BE_REAL_TESTING_TESTING_123",
 	];
 
 	const responses = await Promise.all(
-		usernames.map(username => request.get(`/${username}`))
+		usernames.map((username) => request.get(`/${username}`))
 	);
 
-	responses.forEach(res => expect(res.body.status).toBe(404));
+	responses.forEach((res) => expect(res.body.status).toBe(404));
 
 	done();
 });
