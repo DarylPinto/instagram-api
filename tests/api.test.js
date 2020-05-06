@@ -1,3 +1,4 @@
+/* eslint-disable jest/no-test-callback */
 const fetch = require("node-fetch");
 const nowUri = "https://insta-api.now.sh";
 const nowApiBaseUri = "https://insta-api.now.sh/api";
@@ -7,7 +8,7 @@ jest.setTimeout(20000);
 describe("The Prod API", () => {
 	it("is live", async (done) => {
 		const res = await fetch(nowUri);
-		const html = await res.text();	
+		const html = await res.text();
 		expect(html).toBeDefined();
 		done();
 	});

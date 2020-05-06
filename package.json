@@ -1,32 +1,36 @@
 {
-  "name": "instagram-api",
-  "version": "1.0.0",
-  "main": "index.js",
-  "license": "MIT",
-  "scripts": {
-    "test": "jest"
-  },
-  "dependencies": {
-    "better-sqlite3": "^5.4.3",
-    "jsdom": "^15.1.1",
-    "node-fetch": "^2.6.0"
-  },
-  "jest": {
-    "clearMocks": true,
-    "testEnvironment": "node"
-  },
-  "devDependencies": {
-    "husky": "^4.2.5",
-    "jest": "^25.4.0",
-    "lint-staged": "^10.2.2",
-    "prettier": "^2.0.5"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*.{js,json,css,md}": "prettier --write"
-  }
+	"name": "instagram-api",
+	"version": "1.0.0",
+	"main": "index.js",
+	"license": "MIT",
+	"scripts": {
+		"test": "jest"
+	},
+	"dependencies": {
+		"better-sqlite3": "^5.4.3",
+		"jsdom": "^15.1.1",
+		"node-fetch": "^2.6.0"
+	},
+	"jest": {
+		"clearMocks": true,
+		"testEnvironment": "node"
+	},
+	"devDependencies": {
+		"eslint": "^6.8.0",
+		"eslint-config-prettier": "^6.11.0",
+		"eslint-plugin-jest": "^23.9.0",
+		"husky": "^4.2.5",
+		"jest": "^25.4.0",
+		"lint-staged": "^10.2.2",
+		"prettier": "^2.0.5"
+	},
+	"husky": {
+		"hooks": {
+			"pre-commit": "lint-staged"
+		}
+	},
+	"lint-staged": {
+		"*.{html,js,json,css,md}": "prettier --write",
+		"*.js": "eslint --fix"
+	}
 }
